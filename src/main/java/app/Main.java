@@ -1,12 +1,11 @@
+package app;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -45,15 +44,15 @@ public class Main extends JPanel implements ActionListener {
         startTime = System.currentTimeMillis();
         world.generateNoTextureWorld(10000, frame);
 
-       /* ServerSocket sersock = new ServerSocket(5000);
-        System.out.println("server is ready");  //  message to know the server is running
-        Socket sock = sersock.accept();
-
-        InputStream istream = sock.getInputStream();
-        DataInputStream dstream = new DataInputStream(istream);
-        message = dstream.readLine();
-        System.out.println(message);
-        dstream .close(); istream.close(); sock.close(); sersock.close();*/
+//        ServerSocket sersock = new ServerSocket(5000);
+//        System.out.println("server is ready");  //  message to know the server is running
+//        Socket sock = sersock.accept();
+//
+//        InputStream istream = sock.getInputStream();
+//        DataInputStream dstream = new DataInputStream(istream);
+//        message = dstream.readLine();
+//        System.out.println(message);
+//        dstream .close(); istream.close(); sock.close(); sersock.close();
 
 
         this.frame.addKeyListener(new KeyAdapter() {
@@ -128,7 +127,7 @@ public class Main extends JPanel implements ActionListener {
             if(world.elements.get(0).x >=frame.getWidth() / 2 - 45){
                 if (pers.orientationVert == false) {
                     for(int i = 0; i< world.enemies.size();i++) {
-                        world.enemies.get(i).image = new ImageIcon("enemydied.png").getImage();
+                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
                         world.enemies.get(i).stop = true;
                     }
                     world.move(120, -100);
@@ -147,7 +146,7 @@ public class Main extends JPanel implements ActionListener {
                     world.move(-100, 80);
                     pers.orientationVert = false;
                     for(int i = 0; i< world.enemies.size();i++) {
-                        world.enemies.get(i).image = new ImageIcon("enemy.png").getImage();
+                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemy.png").getImage();
                         world.enemies.get(i).stop = false;
                     }
                 }
@@ -168,12 +167,12 @@ public class Main extends JPanel implements ActionListener {
                 if (pers.kickStatus){
                     if (pers.left){
                         if ((world.enemies.get(i).x <= frame.getWidth() / 2 + 20) && (world.enemies.get(i).x  >= frame.getWidth() / 2 - 150)){
-                            world.enemies.get(i).image = new ImageIcon("enemydied.png").getImage();
+                            world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
                             world.enemies.get(i).died = true;
                             world.enemies.get(i).attackStatus = false;
                         }
                     } else if ((world.enemies.get(i).x <= frame.getWidth() / 2 + 50) && (world.enemies.get(i).x  >= frame.getWidth() / 2 - 20)){
-                        world.enemies.get(i).image = new ImageIcon("enemydied.png").getImage();
+                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
                         world.enemies.get(i).died = true;
                         world.enemies.get(i).attackStatus = false;
                     }
@@ -253,7 +252,7 @@ public class Main extends JPanel implements ActionListener {
                 Image fire;
                 switch (pers.kickProcStat){
                     case 0:
-                        fire = new ImageIcon("fire1.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire1.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -261,7 +260,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 1:
-                        fire = new ImageIcon("fire2.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire2.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -269,7 +268,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 2:
-                        fire = new ImageIcon("fire3.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire3.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -277,7 +276,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 3:
-                        fire = new ImageIcon("fire4.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire4.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -285,7 +284,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 4:
-                        fire = new ImageIcon("fire5.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire5.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -293,7 +292,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 5:
-                        fire = new ImageIcon("fire6.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire6.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -301,7 +300,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 6:
-                        fire = new ImageIcon("fire7.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire7.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -309,7 +308,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 7:
-                        fire = new ImageIcon("fire8.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire8.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);
@@ -317,7 +316,7 @@ public class Main extends JPanel implements ActionListener {
                             g2d.drawImage(fire, frame.getWidth() / 2 - 50, frame.getHeight() / 2, null);
                         break;
                     case 8:
-                        fire = new ImageIcon("fire9.png").getImage();
+                        fire = new ImageIcon(SuperGame.IMAGE_RESOURCE + "fire9.png").getImage();
                         pers.kickProcStat++;
                         if (pers.left)
                             g2d.drawImage(fire, frame.getWidth() / 2, frame.getHeight() / 2, frame.getWidth() / 2 - fire.getWidth(null), fire.getHeight(null) + frame.getHeight() / 2, 0, 0, fire.getWidth(null), fire.getHeight(null), null);

@@ -1,3 +1,5 @@
+package app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -5,7 +7,7 @@ import java.util.ArrayList;
 public class Player {
     ArrayList<Image> animgo;
     ArrayList<Image> stayAnim;
-    private Image defPos = new ImageIcon("1.png").getImage();
+    private final Image defPos = new ImageIcon(SuperGame.IMAGE_RESOURCE + "1.png").getImage();
     private Image curPos = defPos;
     boolean stay = true;
     int status = 0;
@@ -20,20 +22,20 @@ public class Player {
     
     public Player(){
         animgo = new ArrayList<Image>();
-        animgo.add(new ImageIcon("run1.png").getImage());
-        animgo.add(new ImageIcon("run2.png").getImage());
-        animgo.add(new ImageIcon("run3.png").getImage());
-        animgo.add(new ImageIcon("run4.png").getImage());
-        animgo.add(new ImageIcon("run5.png").getImage());
-        animgo.add(new ImageIcon("run6.png").getImage());
-        animgo.add(new ImageIcon("run7.png").getImage());
-        animgo.add(new ImageIcon("run8.png").getImage());
-        animgo.add(new ImageIcon("run9.png").getImage());
-        animgo.add(new ImageIcon("run10.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run1.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run2.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run3.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run4.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run5.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run6.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run7.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run8.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run9.png").getImage());
+        animgo.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + "run10.png").getImage());
 
         stayAnim = new ArrayList<Image>();
         for(int i = 0; i < 8; i++){
-            stayAnim.add(new ImageIcon(Integer.toString(i+1)+ ".png").getImage());
+            stayAnim.add(new ImageIcon(SuperGame.IMAGE_RESOURCE + (i + 1) + ".png").getImage());
         }
     }
 

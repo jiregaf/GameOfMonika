@@ -1,3 +1,5 @@
+package app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -17,7 +19,7 @@ public class World {
     public ArrayList<Explosion> explosions = new ArrayList<>();
    public World(){
        try {
-           File file = new File("monika.txt");
+           File file = new File(SuperGame.IMAGE_RESOURCE + "monika.txt");
            //создаем объект FileReader для объекта File
            FileReader fr = new FileReader(file);
            //создаем BufferedReader с существующего FileReader для построчного считывания
@@ -59,25 +61,25 @@ public class World {
 
     public void generateNoTextureWorld(int width, JFrame frame){
       for(int i = -width / 2; i < width / 2; i+=300){
-           add(new WorldElement(new ImageIcon("notexturetrava.png").getImage(), frame.getWidth()
+           add(new WorldElement(new ImageIcon(SuperGame.IMAGE_RESOURCE + "notexturetrava.png").getImage(), frame.getWidth()
                   / 2 + i,  frame.getHeight() / 2 + 100));
-           add(new WorldElement(new ImageIcon("notexture.png").getImage(), frame.getWidth()
+           add(new WorldElement(new ImageIcon(SuperGame.IMAGE_RESOURCE + "notexture.png").getImage(), frame.getWidth()
                    / 2 + i * 2,  frame.getHeight() / 2 - 600));
 
        }
 
        for(int i = 0; i < 5; i++){
-           hearts.add(new WorldElement( new ImageIcon("heart.png").getImage(), 100, 100));
+           hearts.add(new WorldElement( new ImageIcon(SuperGame.IMAGE_RESOURCE + "heart.png").getImage(), 100, 100));
            hearts.get(i).x = - 100000 / 2 + i * 20000;
            hearts.get(i).y = frame.getHeight() / 2 - 300;
        }
        for(int i = 0; i < 100; i++) {
            Enemy enemy;
-           enemy = new Enemy(new ImageIcon("enemy.png").getImage(), (int) (frame.getWidth() / 2 + Math.pow(-1, i) * i * 300), frame.getHeight() / 2, frame);
+           enemy = new Enemy(new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemy.png").getImage(), (int) (frame.getWidth() / 2 + Math.pow(-1, i) * i * 300), frame.getHeight() / 2, frame);
            add(enemy);
            enemies.add(enemy);
        }
-       // add(new WorldElement(new ImageIcon("map.jpeg").getImage(), frame.getWidth()
+       // add(new app.WorldElement(new ImageIcon("src/main/resources/images/map.jpeg").getImage(), frame.getWidth()
         //        / 2 ,  0));
     }
 
@@ -86,7 +88,7 @@ public class World {
     }
 
     public void showMonica(Graphics2D g, JFrame frame){
-       Image image = new ImageIcon("monika.jpg").getImage();
+       Image image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "monika.jpg").getImage();
        g.drawImage(image, 0, 0, null);
        Font font = new Font("TimesRoman", Font.BOLD, 22);
        g.setFont(font);
