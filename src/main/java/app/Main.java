@@ -31,18 +31,20 @@ public class Main extends JPanel implements ActionListener {
     Timer timer = new Timer(30, this);
 
     JFrame frame;
-    static String message = "Character";
+    static String message = "Boy of Monika";
     boolean isA = false;
     boolean isD = false;
     boolean isJ = false;
     long startTime;
     long endTime;
+    long timeOfGameStart = 0;
+    boolean secondPart = false;
 
     public Main(JFrame frame) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         this.frame = frame;
         timer.start();
         startTime = System.currentTimeMillis();
-        world.generateNoTextureWorld(10000, frame);
+        world.generateNoTextureWorld(10000, 1300, frame);
 
 //        ServerSocket sersock = new ServerSocket(5000);
 //        System.out.println("server is ready");  //  message to know the server is running
@@ -120,46 +122,82 @@ public class Main extends JPanel implements ActionListener {
 
     public void paint(Graphics g) {
         super.paint(g);
+        if (secondPart){
+
+        }
+
         if (isA && isD) pers.stay = true; else
         if (isA){
             pers.left = true;
             pers.stay = false;
-            if(world.elements.get(0).x >=frame.getWidth() / 2 - 45){
-                if (pers.orientationVert == false) {
-                    for(int i = 0; i< world.enemies.size();i++) {
-                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
-                        world.enemies.get(i).stop = true;
-                    }
+            if (!world.secondWorld)
+            if((world.elements.get(0).x >=frame.getWidth() / 2 - 45)){
+                if ((pers.orientationVert == false) && (world.elements.get(0).y > frame.getHeight() / 2 - world.height)) {
+                   /* for(int i = 0; i< world.enemies.size();i++) {
+                        if ((Math.abs(world.enemies.get(i).y - frame.getHeight()) > 100) || (pers.orientationVert)) {
+                            world.enemies.get(i).image = new ImageIcon("enemydied.png").getImage();
+                            world.enemies.get(i).stop = true;
+                        }
+                    }*/
                     world.move(120, -100);
                     pers.orientationVert = true;
+                } else if ( (world.elements.get(0).y < frame.getHeight() / 2 - world.height) && (pers.orientationVert == true) ){
+                    pers.orientationVert = false;
+                    world.move(30, -40);
+                } else if (pers.orientationVert != false){
+                    world.move(0, -30);
+
                 }
-                world.move(0, -30);
+                 else if (world.elements.get(0).x < world.width + 200) world.move(30, 0);
             }
              else
             world.move(30, 0);
+             else if (!(frame.getWidth() / 2  - 70 < world.elements.get(0).x)) world.move(30, 0);
         } else
-        if (isD){
+        if (isD) {
             pers.left = false;
             pers.stay = false;
-            if (world.elements.get(0).y > frame.getHeight() / 2 - 20){
-                if (pers.orientationVert == true) {
-                    world.move(-100, 80);
-                    pers.orientationVert = false;
-                    for(int i = 0; i< world.enemies.size();i++) {
-                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemy.png").getImage();
-                        world.enemies.get(i).stop = false;
+            if (!world.secondWorld) {
+                if (world.elements.get(0).y > frame.getHeight() / 2 - 20) {
+                    if (pers.orientationVert == true) {
+                        world.move(-100, 80);
+                        pers.orientationVert = false;
+                        for (int i = 0; i < world.enemies.size(); i++) {
+                            world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemy.png").getImage();
+                            world.enemies.get(i).stop = false;
+                        }
                     }
+                } else if ((pers.orientationVert == false) && (world.elements.get(0).y < frame.getHeight() / 2 - world.height)
+                        && (world.elements.get(0).x < frame.getWidth() / 2)) {
+                    pers.orientationVert = true;
+                    world.move(100, 30);
                 }
-            }
 
-            if (pers.orientationVert)
-                world.move(0, 30); else
-            world.move(-30, 0);
+                if (pers.orientationVert)
+                    world.move(0, 30);
+                else if (world.elements.get(0).x > -(world.width ))
+                    world.move(-30, 0);
+               //     System.out.println("this");
+              //  }
+
+            }else if (!(frame.getWidth() / 2  + 30 > world.elements.get(0).x + 900)) {
+                world.move(-30, 0);
+                System.out.println("this 2");
+            }
         }
 
         Graphics2D g2d = (Graphics2D) g;
 
-
+        for(int i = 0; i< world.enemies.size();i++) {
+            if ((Math.abs(world.enemies.get(i).y - frame.getHeight() / 2) > 300) || (pers.orientationVert)) {
+                world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
+                world.enemies.get(i).stop = true;
+            } else {
+                if (!world.enemies.get(i).died)
+                    world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemy.png").getImage();
+                world.enemies.get(i).stop = false;
+            }
+        }
         if (world.monikaMessage) {
             world.showMonica(g2d, frame);
         } else {
@@ -167,26 +205,44 @@ public class Main extends JPanel implements ActionListener {
                 if (pers.kickStatus){
                     if (pers.left){
                         if ((world.enemies.get(i).x <= frame.getWidth() / 2 + 20) && (world.enemies.get(i).x  >= frame.getWidth() / 2 - 150)){
+                            if (!world.enemies.get(i).died) {
+                                world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
+                                world.enemies.get(i).died = true;
+                                world.enemies.get(i).attackStatus = false;
+                                world.kills++;
+                            }
+                        }
+                    } else if ((world.enemies.get(i).x <= frame.getWidth() / 2 + 50) && (world.enemies.get(i).x  >= frame.getWidth() / 2 - 20)){
+                        if (!world.enemies.get(i).died) {
                             world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
                             world.enemies.get(i).died = true;
                             world.enemies.get(i).attackStatus = false;
+                            world.kills++;
                         }
-                    } else if ((world.enemies.get(i).x <= frame.getWidth() / 2 + 50) && (world.enemies.get(i).x  >= frame.getWidth() / 2 - 20)){
-                        world.enemies.get(i).image = new ImageIcon(SuperGame.IMAGE_RESOURCE + "enemydied.png").getImage();
-                        world.enemies.get(i).died = true;
-                        world.enemies.get(i).attackStatus = false;
+                    }
+                }
+            }
+            for(int i = 0; i < world.elements.size(); i++){
+                if(world.elements.get(i).getClass().toString().equals("class Monika")){
+                    ((Monika) (world.elements.get(i))).logic(frame, g2d, world, this);
+                    if  (((Monika) (world.elements.get(i))).isShowMonika) {
+                        if ((world.elements.get(0).x < -(world.width + frame.getWidth() + 400))
+                                && (world.elements.get(0).x > -(world.width + frame.getWidth() + 450)))
+                            world.generateNewWorld(1000, frame);
+                        if (!secondPart){
+                            world.generateEnemies(30, frame, world.elements.get(0).x - 2000, world.elements.get(0).x - 500, frame.getHeight() / 2 + 100 );
+                            world.generateEnemies(30, frame, world.elements.get(0).x + 2000, world.elements.get(0).x + 6000, frame.getHeight() / 2 - world.height );
+                            secondPart = true;
+                        }
                     }
                 }
             }
             for (int i = 0; i < world.elements.size(); i++) {
+
+
                 g2d.drawImage(world.elements.get(i).image, world.elements.get(i).x, world.elements.get(i).y, null);
             }
-            for (int i = 0; i < world.hearts.size(); i++) {
-                if ((world.hearts.get(i).x < frame.getWidth() / 2) && (world.hearts.get(i).x + 600 > frame.getWidth() / 2)) {
-                    world.playerFoundHearts++;
-                    world.hearts.remove(i);
-                }
-            }
+
             for(int k = 0; k < world.enemies.size(); k++){
                 if (world.enemies.get(k).attackStatus)
                 world.enemies.get(k).attack(); else world.enemies.get(k).fly();
@@ -213,16 +269,8 @@ public class Main extends JPanel implements ActionListener {
 
                         }
                     }
-                }                                                                                                                                                   
+                }
             }
-            if (world.playerFoundHearts == world.allhearts) {
-                world.monikaMessageCounter = 0;
-                world.showMonica(g2d, frame);
-            }
-            for (int i = 0; i < world.hearts.size(); i++) {
-                g2d.drawImage(world.hearts.get(i).image, world.hearts.get(i).x, world.hearts.get(i).y, null);
-            }
-
 
             pers.animate();
 
@@ -330,21 +378,27 @@ public class Main extends JPanel implements ActionListener {
                         break;
                 }
             }
+            if (timeOfGameStart == 0) timeOfGameStart = System.currentTimeMillis();
+
             if (pers.orientationVert)
             g2d.rotate(190, frame.getWidth() / 2, frame.getHeight() / 2);
             Font f = new Font("Arial", Font.BOLD, 30);
             g2d.setColor(Color.red);
             g2d.setFont(f);
             g2d.drawString(message, 50, 50);
-            g2d.drawString(Integer.toString(world.playerFoundHearts) + " / " + Integer.toString(world.allhearts), 50, 80);
-            g2d.drawString(Integer.toString(pers.curHp) + " / " + Integer.toString(pers.maxHp), 50, 110);
-            g2d.drawString("A : " + Boolean.toString(isA) , 50, 140);
+            g2d.drawString(world.playerFoundHearts + " / " + world.allhearts, 50, 80);
+            g2d.drawString(pers.curHp + " / " + pers.maxHp, 50, 110);
+            g2d.drawString("A : " + isA, 50, 140);
             g2d.drawString("D : " + Boolean.toString(isD) , 50, 170);
-            g2d.drawString("J : " + Boolean.toString(isJ) , 50, 200);
-            g2d.drawString("kick status : " + Boolean.toString(pers.kickStatus) , 50, 230);
-            g2d.drawString("kick can : " + Boolean.toString(pers.canKick) , 50, 260);
-            g2d.drawString("is left : " + Boolean.toString(pers.left) , 50, 290);
-
+            g2d.drawString("J : " + isJ, 50, 200);
+            g2d.drawString("kick status : " + pers.kickStatus, 50, 230);
+            g2d.drawString("kick can : " + pers.canKick, 50, 260);
+            g2d.drawString("is left : " + pers.left, 50, 290);
+            long curTime = System.currentTimeMillis();
+            if (!world.secondWorld) world.gameTime = (curTime - timeOfGameStart) / 1000 + "." + (curTime - timeOfGameStart) % 1000;
+            g2d.drawString("time : " +world.gameTime, 50, 320);
+            g2d.drawString("kills : " + world.kills, 50, 350);
+            g2d.drawString("x0" + world.elements.get(0).x, 50, 380);
             g2d.drawRect(frame.getWidth() / 2 - 2, frame.getHeight() / 2, 4, 4);
     }
     }
