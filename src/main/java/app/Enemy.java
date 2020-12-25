@@ -1,39 +1,26 @@
 package app;
 
-import javax.swing.*;
+
 import java.awt.*;
 
-public class Enemy extends WorldElement{
-    public boolean stop = false;
-    JFrame frame;
-    boolean attackStatus = true;
+/*
+В отличии от предудущих версий пока что потерял функциональность перемещенияя по синусоиде и нападать на игрока
+Но это возможно решить при помощи создания задач "Task" нападения и передвижения по какой-угодно траектории и тд...
+, вызове их через метод "Tick()" В этом методе можно оперировать будет разными Task-ами  создавая сложное поведение
+ Пока что здесь выполняется одна задача(Task) это патрулировать вокруг какой-то точки*/
+
+public class Enemy extends WorldElement implements Tickable{
+
+
     boolean died = false;
-    double forY = 0;
-    int xSpeed;
-    double ySpeed;
-    int amp;
-    public Enemy(Image image, int x, int y, JFrame frame) {
-        super(image, x, y);
-        this.frame = frame;
-        xSpeed = (int) (Math.random() * 13 + 7);
-        amp = (int) (Math.random() * 20 + 20);
-        ySpeed = Math.random();
+    Task task;
+    public Enemy(World world, Image image, int x, int y) {
+        super(world, image, x, y);
+        task = new PatrolTask(this);
     }
 
-    public void attack(){
-        if (!stop)
-        if (x > frame.getWidth() / 2){
-            x-=xSpeed;
-            y = (int) (Math.sin(forY) * amp) + frame.getHeight() / 2;
-            forY+=ySpeed;
-        }else {
-            x+=xSpeed;
-            y = (int) (Math.sin(forY) * amp) + frame.getHeight() / 2;
-            forY+=ySpeed;
-        }
-    }
-
-    public void fly(){
-        y-=3;
+    @Override
+    public void tick() {
+        task.doTask();
     }
 }
